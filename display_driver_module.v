@@ -11,11 +11,39 @@ module display_driver_module(
     wire [3:0] bcd_tens;
     wire [3:0] bcd_ones;
     
-    assign bcd_hundreds = in / 100;
-    assign bcd_tens = (in % 100) / 10;
-    assign bcd_ones = in % 10;
+    // //기존 소프트웨어적 방식 - 최적화에 불리
+    // assign bcd_hundreds = in / 100;
+    // assign bcd_tens = (in % 100) / 10;
+    // assign bcd_ones = in % 10;
+
+    //Double Dabble 알고리즘을 활용하여 최적화
+    reg [19:0] shift_reg; //3 * 4bit BCD + 8bit 입력 = 20bit
+    integer i;
+
+    always @ (*) begin
+        shift_reg = 20'd0;
+        shift_reg[7:0] = in;
+
+        for (i = 0; i < 8; i = i + 1) begin
+            if (shift_reg[11:8] >= 5) begin
+                shift_reg[11:8] = shift_reg[11:8] + 3;
+            end
+            if (shift_reg[15:12] >= 5) begin
+                shift_reg[15:12] = shift_reg[15:12] + 3;
+            end
+            if (shift_reg[19:16] >= 5) begin
+                shift_reg[19:16] = shift_reg[19:16] + 3;
+            end
+
+            shift_reg = shift_reg << 1;
+        end
+    end
+
+    assign bcd_ones = shift_reg[11:8];
+    assign bcd_tens = shift_reg[15:12];
+    assign bcd_hundreds = shift_reg[19:16];
     
-    //200,000 clock당 자리 변경
+    //200,000 clock당 자리 변경(500Hz)
     reg [1:0] digit_sel;
     reg [17:0] clk_cnt;
     
