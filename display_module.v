@@ -18,7 +18,7 @@ module display_module(
     output reg [2:0] seg_digit
     );
     
-    wire display_data; //세그먼트에 출력할 숫자 데이터
+    wire [7:0] display_data; //세그먼트에 출력할 숫자 데이터
 
     display_FSM_module display_fsm(.pe_11(pe_11), .pe_12(pe_12), .pe_21(pe_21), .pe_22(pe_22), .sa_2x2_11(sa_2x2_11), .sa_2x2_12(sa_2x2_12), .sa_2x2_21(sa_2x2_21), .sa_2x2_22(sa_2x2_22), .sa_3x3_11(sa_3x3_11), .sa_3x3_12(sa_3x3_12), .sa_3x3_21(sa_3x3_21), .sa_3x3_22(sa_3x3_22), .clk(clk), .rst(rst), .display_data(display_data));
 
