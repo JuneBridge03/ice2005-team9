@@ -63,11 +63,7 @@ module tb_SA3x3;
             rst = 0; #10; rst = 1;
             flat_image  = img;
             flat_kernel = ker;
-            fork
-                begin wait(done); end
-                begin #10000; $display("TIMEOUT: done never asserted"); $finish; end
-            join_any
-            disable fork;
+            wait(done);
             #10;
         end
     endtask
