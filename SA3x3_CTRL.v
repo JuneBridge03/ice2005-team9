@@ -31,8 +31,8 @@ module SA3x3_CTRL (
 
     reg [5:0] cnt;
 
-    always @(posedge clk or negedge rst) begin
-        if (!rst) begin
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
             cnt <= 0; pe_clr <= 1; done <= 0;
             {c11_3x3, c12_3x3, c21_3x3, c22_3x3} <= 0;
             r_din0 <= 0; r_din1 <= 0; r_din2 <= 0;

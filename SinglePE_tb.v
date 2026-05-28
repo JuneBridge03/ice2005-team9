@@ -51,7 +51,7 @@ module tb_SinglePE;
         input [127:0] img;
         input [71:0]  ker;
         begin
-            rst = 0; #10; rst = 1;
+            rst = 1; #10; rst = 0;
             flat_image  = img;
             flat_kernel = ker;
             wait(done);

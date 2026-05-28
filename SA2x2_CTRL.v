@@ -34,7 +34,7 @@ module SA2x2_CTRL (
     endgenerate
 
     always @(posedge clk) begin
-        if (!rst) begin
+        if (rst) begin
             clk_counter <= 0; done <= 0; pe_clr <= 1;
             c11 <= 0; c12 <= 0; c21 <= 0; c22 <= 0;
             filter1 <= 0; filter2 <= 0; in1 <= 0; in2 <= 0;

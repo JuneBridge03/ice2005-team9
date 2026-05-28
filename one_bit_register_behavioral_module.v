@@ -5,10 +5,10 @@ module one_bit_register_behavioral_module (in, clk, rst, out);
     input  in, clk, rst;
     output reg out;
 
-    // 상승 엣지 클럭 / 하강 엣지 리셋
-    always @(posedge clk or negedge rst) begin
-        if (!rst) out <= 1'b0;
-        else      out <= in;
+    // 상승 엣지 클럭 / 상승 엣지 리셋
+    always @(posedge clk or posedge rst) begin
+        if (rst) out <= 1'b0;
+        else     out <= in;
     end
 
 endmodule

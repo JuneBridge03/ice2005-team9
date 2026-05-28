@@ -26,8 +26,8 @@ module PE_CTRL (
     reg [3:0] cnt;
     reg [2:0] state; // 0~3: 출력 인덱스(C11~C22), 4: 완료
 
-    always @(posedge clk or negedge rst) begin
-        if (!rst) begin
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
             cnt   <= 0; state <= 0; pe_clr <= 1; done <= 0;
             {c11_pe, c12_pe, c21_pe, c22_pe} <= 0;
             pe_din <= 0; pe_win <= 0;

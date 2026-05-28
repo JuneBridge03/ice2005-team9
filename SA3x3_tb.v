@@ -60,7 +60,7 @@ module tb_SA3x3;
         input [127:0] img;
         input [71:0]  ker;
         begin
-            rst = 0; #10; rst = 1;
+            rst = 1; #10; rst = 0;
             flat_image  = img;
             flat_kernel = ker;
             wait(done);
@@ -69,7 +69,7 @@ module tb_SA3x3;
     endtask
 
     initial begin
-        clk = 0; rst = 1;
+        clk = 0; rst = 0;
         flat_image = 0; flat_kernel = 0;
         fail_count = 0;
         #20;

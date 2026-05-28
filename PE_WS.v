@@ -15,8 +15,8 @@ module PE_WS (
     multiplier_8bit u_mult (.a(din), .b(win), .out(mult_result));
 
     // 클럭 상승 엣지에 데이터 전달 및 부분합 누적
-    always @(posedge clk or negedge rst) begin
-        if (!rst || clear) begin
+    always @(posedge clk or posedge rst) begin
+        if (rst || clear) begin
             dout <= 8'd0;
             out  <= 8'd0;
         end else begin
