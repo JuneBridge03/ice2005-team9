@@ -274,9 +274,28 @@ always @(*) begin
         SYS_3x3_9 : begin reg_rst_SYS_3x3 = 1'b0; reg_addr_mem_A2 = outA31; reg_addr_mem_A3 = outA42; end
         SYS_3x3_10: begin reg_rst_SYS_3x3 = 1'b0; reg_addr_mem_A3 = outA41; end
         SYS_3x3_11: begin reg_rst_SYS_3x3 = 1'b0; end        
+        SYS_3x3_Wait : begin reg_rst_SYS_3x3 = 1'b0; end
+        SYS_3x3_RST : begin reg_rst_SYS_3x3 = 1'b1; end
+          
+        // =====================================================================
+        // 2x2 Systolic Array 출력 매핑
+        // =====================================================================
+        SYS_2x2_1 : begin reg_rst_SYS_2x2 = 1'b0; reg_addr_mem_A1 = outA33; reg_addr_mem_A2 = outA44; reg_addr_mem_F1 = outF11; reg_addr_mem_F2 = outF11; end
+        SYS_2x2_2 : begin reg_rst_SYS_2x2 = 1'b0; reg_addr_mem_A1 = outA32; reg_addr_mem_A2 = outA43; reg_addr_mem_F1 = outF12; reg_addr_mem_F2 = outF12; end
+        SYS_2x2_3 : begin reg_rst_SYS_2x2 = 1'b0; reg_addr_mem_A1 = outA24; reg_addr_mem_A2 = outA42; reg_addr_mem_F2 = outF13; end
+        SYS_2x2_4 : begin reg_rst_SYS_2x2 = 1'b0; reg_addr_mem_A1 = outA23; reg_addr_mem_A2 = outA34; reg_addr_mem_F1 = outF21; reg_addr_mem_F2 = outF21; end
+        SYS_2x2_5 : begin reg_rst_SYS_2x2 = 1'b0; reg_addr_mem_A1 = outA22; reg_addr_mem_A2 = outA33; reg_addr_mem_F1 = outF22; reg_addr_mem_F2 = outF22; end  
+        SYS_2x2_6 : begin reg_rst_SYS_2x2 = 1'b0; reg_addr_mem_A1 = outA14; reg_addr_mem_A2 = outA32; reg_addr_mem_F2 = outF23; end
+        SYS_2x2_7 : begin reg_rst_SYS_2x2 = 1'b0; reg_addr_mem_A1 = outA13; reg_addr_mem_A2 = outA24; reg_addr_mem_F1 = outF31; reg_addr_mem_F2 = outF31; end
+        SYS_2x2_8 : begin reg_rst_SYS_2x2 = 1'b0; reg_addr_mem_A1 = outA12; reg_addr_mem_A2 = outA23; reg_addr_mem_F1 = outF32; reg_addr_mem_F2 = outF32; end
+        SYS_2x2_9 : begin reg_rst_SYS_2x2 = 1'b0; reg_addr_mem_A1 = outA34; reg_addr_mem_A2 = outA22; reg_addr_mem_F2 = outF33; end
+        SYS_2x2_10: begin reg_rst_SYS_2x2 = 1'b0; reg_addr_mem_A1 = outA11; reg_addr_mem_F1 = outF33; reg_addr_mem_F2 = outF11; end
+        SYS_2x2_11: begin reg_rst_SYS_2x2 = 1'b0; reg_addr_mem_A1 = outA21; reg_addr_mem_A2 = outA21; reg_addr_mem_F1 = outF23; end
+        SYS_2x2_12: begin reg_rst_SYS_2x2 = 1'b0; reg_addr_mem_A1 = outA31; reg_addr_mem_A2 = outA31; reg_addr_mem_F1 = outF13; end
+        SYS_2x2_13: begin reg_rst_SYS_2x2 = 1'b0; reg_addr_mem_A1 = outA32; reg_addr_mem_A2 = outA41; end
+        SYS_2x2_Wait : begin reg_rst_SYS_2x2 = 1'b0; end
+        SYS_2x2_RST : begin reg_rst_SYS_2x2 = 1'b1; end
     endcase  
 end   
-
-endmodule
 
 endmodule
