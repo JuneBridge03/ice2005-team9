@@ -1,5 +1,8 @@
 //이 모듈은 입력받은 8비트 정수를 3개의 7세그먼트 디스플레이에 출력하는 드라이버 코드입니다.
-module display_driver_module(
+
+module display_driver_module #(
+    parameter driver_cnt_max = 18'd199999 //클럭을 200,000분주하여 enable 신호 생성하기 위한 변수
+    )(
     input [7:0] in,
     input clk,
     input rst,
@@ -48,8 +51,6 @@ module display_driver_module(
     reg [17:0] clk_cnt;
     
     wire seg_clk_en;
-
-    parameter driver_cnt_max = 18'd199999; //클럭을 200,000분주하여 enable 신호 생성
     
     always @(posedge clk or posedge rst) begin
         if (rst) begin
