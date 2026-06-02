@@ -1,5 +1,5 @@
-오직 FSM_Single_PE 모듈 하나만 불러와서, enable 신호가 들어왔을 때 C11_PE_1 부터 
-C22_PE_Wait 까지 상태(State)가 잘 넘어가고 올바른 데이터를 뱉는지 확인.
+//오직 FSM_Single_PE 모듈 하나만 불러와서, enable 신호가 들어왔을 때 C11_PE_1 부터 
+//C22_PE_Wait 까지 상태(State)가 잘 넘어가고 올바른 데이터를 뱉는지 확인.
 `timescale 1ns / 1ps
 
 module tb_FSM_Single_PE();
