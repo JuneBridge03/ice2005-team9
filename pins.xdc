@@ -11,6 +11,12 @@ set_property -dict {PACKAGE_PIN J6 IOSTANDARD LVCMOS33} [get_ports {SW[2]}]
 set_property -dict {PACKAGE_PIN L5 IOSTANDARD LVCMOS33} [get_ports {SW[1]}]
 set_property -dict {PACKAGE_PIN L4 IOSTANDARD LVCMOS33} [get_ports {SW[0]}]
 
+#Test LEDs
+set_property -dict {PACKAGE_PIN W22 IOSTANDARD LVCMOS33} [get_ports {LED[2]}]
+set_property -dict {PACKAGE_PIN Y22 IOSTANDARD LVCMOS33} [get_ports {LED[1]}]
+set_property -dict {PACKAGE_PIN AB22 IOSTANDARD LVCMOS33} [get_ports {LED[0]}]
+set_property -dict {PACKAGE_PIN Y18 IOSTANDARD LVCMOS33} [get_ports done]
+
 #Clock and reset
 set_property -dict {PACKAGE_PIN R4 IOSTANDARD LVCMOS33} [get_ports CLK]
 set_property -dict {PACKAGE_PIN U7 IOSTANDARD LVCMOS33} [get_ports RST]

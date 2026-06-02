@@ -13,7 +13,8 @@ module display_FSM_module #(
     input [7:0] sa_3x3_22,
     input clk,
     input rst,
-    output reg [7:0] display_data
+    output reg [7:0] display_data,
+    output [2:0] state
     );
     
     //1초(100M 클럭)마다 enable 신호 생성
@@ -39,8 +40,8 @@ module display_FSM_module #(
     //FSM 상태
     reg [3:0] current_state, next_state;
 
-    localparam SA_2X2_11 = 4'd0, SA_2X2_12 = 4'd1, SA_2X2_21 = 4'd2, SA_2X2_22 = 4'd3,
-               SA_3X3_11 = 4'd4, SA_3X3_12 = 4'd5, SA_3X3_21 = 4'd6, SA_3X3_22 = 4'd7;
+    localparam SA_2X2_11 = 3'd0, SA_2X2_12 = 3'd1, SA_2X2_21 = 3'd2, SA_2X2_22 = 3'd3,
+               SA_3X3_11 = 3'd4, SA_3X3_12 = 3'd5, SA_3X3_21 = 3'd6, SA_3X3_22 = 3'd7;
     
     //FSM - Moore machine
     //현재 상태 업데이트
@@ -84,5 +85,8 @@ module display_FSM_module #(
             default   : display_data = 8'd0;      
         endcase
     end
+
+    //상태 확인용 LED
+    assign state = current_state;
 
 endmodule
