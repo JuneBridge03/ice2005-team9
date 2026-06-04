@@ -10,7 +10,9 @@ module controller (
 
     // FSM 상태 레지스터와 타이머(카운터)
     reg [1:0] current_state, next_state;
-    reg [4:0] wait_cnt; // PE 연산 시간(16클럭)을 속으로 세기 위한 스톱워치
+    
+    //  수정됨: 70까지 세기 위해 5비트 -> 7비트로 확장 (최대 127까지 저장 가능)
+    reg [6:0] wait_cnt; 
 
     // 상태 정의
     localparam IDLE = 2'd0, WRITE_MEM = 2'd1, WAIT_PE = 2'd2, COMPUTE = 2'd3;
@@ -21,13 +23,15 @@ module controller (
     always @(posedge clk or posedge rst) begin
         if (rst) begin
             current_state <= IDLE;
-            wait_cnt <= 5'd0;
+            wait_cnt <= 7'd0; //  7비트에 맞춰 초기화
         end else begin
             current_state <= next_state;
             
-            // WAIT_PE 상태에 진입하면 스톱워치 작동 시작 (16까지 셈)
-            if (current_state == WAIT_PE && wait_cnt < 5'd16) begin
+            // WAIT_PE 상태에 진입하면 스톱워치 작동 시작 (70까지 셈)
+            if (current_state == WAIT_PE && wait_cnt < 7'd70) begin //  16 -> 70으로 변경
                 wait_cnt <= wait_cnt + 1'b1;
+            end else if (current_state != WAIT_PE) begin
+                wait_cnt <= 7'd0; //  다른 상태일 때 카운터를 0으로 초기화 (안전장치)
             end
         end
     end
@@ -47,8 +51,8 @@ module controller (
             end
             
             WAIT_PE: begin
-                // 🚀 핵심: 외부 신호를 받을 필요 없이 속으로 16클럭을 셉니다!
-                if (wait_cnt >= 5'd16) next_state = COMPUTE;
+                //  외부 신호를 받을 필요 없이 속으로 70클럭을 셉니다!
+                if (wait_cnt >= 7'd70) next_state = COMPUTE; //  16 -> 70으로 변경
                 else                   next_state = WAIT_PE;
             end
             
@@ -81,12 +85,12 @@ module controller (
             
             WAIT_PE: begin 
                 write = 1'b0; 
-                display_en = 1'b0; // 🚀 연산기가 계산하는 16클럭 동안 화면을 꺼서 쓰레기값 유출 방지!
+                display_en = 1'b0; //  연산기가 계산하는 70클럭 동안 화면을 꺼서 쓰레기값 유출 방지!
             end
             
             COMPUTE: begin 
                 write = 1'b0; 
-                display_en = 1'b1; // 🚀 16클럭이 지나 정답이 확정되면 그제야 화면 ON!
+                display_en = 1'b1; // 70클럭이 지나 3x3 어레이 정답까지 모두 확정되면 화면 ON!
             end
             
             default: begin 
