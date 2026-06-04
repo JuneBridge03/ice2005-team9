@@ -6,7 +6,7 @@ module controller (
     input start,          
     output reg write,     
     output reg display_en,
-    output reg calc_rst    // 🚀 [추가] 연산기를 꽉 잡고 있을 전용 리셋 신호
+    output reg calc_rst    //  [추가] 연산기를 꽉 잡고 있을 전용 리셋 신호
 );
 
     // FSM 상태 레지스터와 타이머(카운터)
