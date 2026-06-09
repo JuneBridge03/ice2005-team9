@@ -1,12 +1,6 @@
 #Define clock to 100MHz
 create_clock -period 10.000 -name sys_clk -waveform {0.000 5.000} [get_ports CLK]
 
-#Test LEDs
-set_property -dict {PACKAGE_PIN W22 IOSTANDARD LVCMOS33} [get_ports {LED[2]}]
-set_property -dict {PACKAGE_PIN Y22 IOSTANDARD LVCMOS33} [get_ports {LED[1]}]
-set_property -dict {PACKAGE_PIN AB22 IOSTANDARD LVCMOS33} [get_ports {LED[0]}]
-set_property -dict {PACKAGE_PIN Y18 IOSTANDARD LVCMOS33} [get_ports done]
-
 #Clock and reset
 set_property -dict {PACKAGE_PIN R4 IOSTANDARD LVCMOS33} [get_ports CLK]
 set_property -dict {PACKAGE_PIN U7 IOSTANDARD LVCMOS33} [get_ports RST]
