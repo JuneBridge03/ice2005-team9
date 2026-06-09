@@ -10,7 +10,7 @@ module Block_Array2x2 (
 );
     // FSM ↔ 어레이 연결 내부 와이어
     wire       pe_clr;
-    wire [7:0] f1, f2, i1, i2;
+    wire [7:0] systolic_filter_in0, systolic_filter_in1, systolic_data_in0, systolic_data_in1;
     wire [7:0] po1, po2, po3, po4;
 
     // FSM: 스큐 스케줄링 및 결과 캡처
@@ -19,7 +19,7 @@ module Block_Array2x2 (
         .flat_image(flat_image), .flat_kernel(flat_kernel),
         .pe_out_1(po1), .pe_out_2(po2), .pe_out_3(po3), .pe_out_4(po4),
         .pe_clr(pe_clr),
-        .filter1(f1), .filter2(f2), .in1(i1), .in2(i2),
+        .systolic_filter_in0(systolic_filter_in0), .systolic_filter_in1(systolic_filter_in1), .systolic_data_in0(systolic_data_in0), .systolic_data_in1(systolic_data_in1),
         .c11(c11_2x2), .c12(c12_2x2), .c21(c21_2x2), .c22(c22_2x2),
         .done(done)
     );
@@ -27,8 +27,8 @@ module Block_Array2x2 (
     // 2×2 시스톨릭 어레이 본체
     SA2x2 u_systolic_array (
         .clk(clk), .rst(rst), .clear(pe_clr),
-        .filter1(f1), .filter2(f2),
-        .in1(i1), .in2(i2),
+        .filter1(systolic_filter_in0), .filter2(systolic_filter_in1),
+        .in1(systolic_data_in0), .in2(systolic_data_in1),
         .pe_out_1(po1), .pe_out_2(po2), .pe_out_3(po3), .pe_out_4(po4)
     );
 

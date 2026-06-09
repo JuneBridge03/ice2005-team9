@@ -9,7 +9,7 @@ module SA3x3_CTRL (
     input  [71:0]  flat_kernel,
     input  [7:0]   sout20, sout21, sout22, // SA3x3 최하단 행 출력
     output reg     pe_clr,
-    output reg [7:0] r_din0, r_din1, r_din2,
+    output reg [7:0] systolic_data_in0, systolic_data_in1, systolic_data_in2,
     output [7:0] w00, w01, w02, w10, w11, w12, w20, w21, w22, // 고정 가중치
     output reg [7:0] c11_3x3, c12_3x3, c21_3x3, c22_3x3,
     output reg     done
@@ -29,41 +29,48 @@ module SA3x3_CTRL (
     assign w10=ker[1][2]; assign w11=ker[1][1]; assign w12=ker[1][0];
     assign w20=ker[0][2]; assign w21=ker[0][1]; assign w22=ker[0][0];
 
-    reg [5:0] cnt;
+    // 타이밍 파라미터  
+    localparam CAPTURE_C11 = 6'd6;
+    localparam CAPTURE_C12 = 6'd9;
+    localparam CAPTURE_C21 = 6'd12;
+    localparam CAPTURE_C22 = 6'd15;
+    localparam COUNTER_WIDTH = 6;
+    
+    reg [COUNTER_WIDTH-1:0] cnt;
 
     always @(posedge clk or posedge rst) begin
         if (rst) begin
             cnt <= 0; pe_clr <= 1; done <= 0;
             {c11_3x3, c12_3x3, c21_3x3, c22_3x3} <= 0;
-            r_din0 <= 0; r_din1 <= 0; r_din2 <= 0;
+            systolic_data_in0 <= 0; systolic_data_in1 <= 0; systolic_data_in2 <= 0;
         end else begin
             pe_clr <= 0;
             cnt    <= cnt + 1;
 
             // 스큐 데이터 공급 스케줄 (행별 1사이클 오프셋)
             case (cnt)
-                0:  begin r_din0 <= img[0][2]; r_din1 <= 8'd0;      r_din2 <= 8'd0;      end
-                1:  begin r_din0 <= img[0][1]; r_din1 <= img[1][2]; r_din2 <= 8'd0;      end
-                2:  begin r_din0 <= img[0][0]; r_din1 <= img[1][1]; r_din2 <= img[2][2]; end
-                3:  begin r_din0 <= img[0][3]; r_din1 <= img[1][0]; r_din2 <= img[2][1]; end
-                4:  begin r_din0 <= img[0][2]; r_din1 <= img[1][3]; r_din2 <= img[2][0]; end
-                5:  begin r_din0 <= img[0][1]; r_din1 <= img[1][2]; r_din2 <= img[2][3]; end
-                6:  begin r_din0 <= img[1][2]; r_din1 <= img[1][1]; r_din2 <= img[2][2]; end
-                7:  begin r_din0 <= img[1][1]; r_din1 <= img[2][2]; r_din2 <= img[2][1]; end
-                8:  begin r_din0 <= img[1][0]; r_din1 <= img[2][1]; r_din2 <= img[3][2]; end
-                9:  begin r_din0 <= img[1][3]; r_din1 <= img[2][0]; r_din2 <= img[3][1]; end
-                10: begin r_din0 <= img[1][2]; r_din1 <= img[2][3]; r_din2 <= img[3][0]; end
-                11: begin r_din0 <= img[1][1]; r_din1 <= img[2][2]; r_din2 <= img[3][3]; end
-                12: begin r_din0 <= 8'd0;      r_din1 <= img[2][1]; r_din2 <= img[3][2]; end
-                13: begin r_din0 <= 8'd0;      r_din1 <= 8'd0;      r_din2 <= img[3][1]; end
-                default: begin r_din0 <= 0; r_din1 <= 0; r_din2 <= 0; end
+                0:  begin systolic_data_in0 <= img[0][2]; systolic_data_in1 <= 8'd0;      systolic_data_in2 <= 8'd0;      end
+                1:  begin systolic_data_in0 <= img[0][1]; systolic_data_in1 <= img[1][2]; systolic_data_in2 <= 8'd0;      end
+                2:  begin systolic_data_in0 <= img[0][0]; systolic_data_in1 <= img[1][1]; systolic_data_in2 <= img[2][2]; end
+                3:  begin systolic_data_in0 <= img[0][3]; systolic_data_in1 <= img[1][0]; systolic_data_in2 <= img[2][1]; end
+                4:  begin systolic_data_in0 <= img[0][2]; systolic_data_in1 <= img[1][3]; systolic_data_in2 <= img[2][0]; end
+                5:  begin systolic_data_in0 <= img[0][1]; systolic_data_in1 <= img[1][2]; systolic_data_in2 <= img[2][3]; end
+                6:  begin systolic_data_in0 <= img[1][2]; systolic_data_in1 <= img[1][1]; systolic_data_in2 <= img[2][2]; end
+                7:  begin systolic_data_in0 <= img[1][1]; systolic_data_in1 <= img[2][2]; systolic_data_in2 <= img[2][1]; end
+                8:  begin systolic_data_in0 <= img[1][0]; systolic_data_in1 <= img[2][1]; systolic_data_in2 <= img[3][2]; end
+                9:  begin systolic_data_in0 <= img[1][3]; systolic_data_in1 <= img[2][0]; systolic_data_in2 <= img[3][1]; end
+                10: begin systolic_data_in0 <= img[1][2]; systolic_data_in1 <= img[2][3]; systolic_data_in2 <= img[3][0]; end
+                11: begin systolic_data_in0 <= img[1][1]; systolic_data_in1 <= img[2][2]; systolic_data_in2 <= img[3][3]; end
+                12: begin systolic_data_in0 <= 8'd0;      systolic_data_in1 <= img[2][1]; systolic_data_in2 <= img[3][2]; end
+                13: begin systolic_data_in0 <= 8'd0;      systolic_data_in1 <= 8'd0;      systolic_data_in2 <= img[3][1]; end
+                default: begin systolic_data_in0 <= 0; systolic_data_in1 <= 0; systolic_data_in2 <= 0; end
             endcase
 
             // 파이프라인 출력 캡처: 3열 부분합 합산 = 해당 출력 픽셀
-            if (cnt == 6)  c11_3x3 <= sout20 + sout21 + sout22;
-            if (cnt == 9)  c12_3x3 <= sout20 + sout21 + sout22;
-            if (cnt == 12) c21_3x3 <= sout20 + sout21 + sout22;
-            if (cnt == 15) begin
+            if (cnt == CAPTURE_C11)  c11_3x3 <= sout20 + sout21 + sout22;
+            if (cnt == CAPTURE_C12)  c12_3x3 <= sout20 + sout21 + sout22;
+            if (cnt == CAPTURE_C21) c21_3x3 <= sout20 + sout21 + sout22;
+            if (cnt == CAPTURE_C22) begin
                 c22_3x3 <= sout20 + sout21 + sout22;
                 done <= 1;
             end

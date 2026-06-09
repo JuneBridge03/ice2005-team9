@@ -23,6 +23,13 @@ module PE_CTRL (
             assign ker[r][c] = flat_kernel[71-(r*3+c)*8 -: 8];
     endgenerate
 
+    // 타이밍 파라미터
+    localparam MAC_CYCLES = 4'd9;
+    localparam PIPELINE_DELAY = 4'd1;
+    localparam CLEAR_CYCLE = 4'd1;
+    localparam TOTAL_CYCLES = MAC_CYCLES + PIPELINE_DELAY + CLEAR_CYCLE;
+    localparam NUM_OUTPUTS = 3'd4;
+    
     reg [3:0] cnt;
     reg [2:0] state; // 0~3: 출력 인덱스(C11~C22), 4: 완료
 
@@ -38,7 +45,7 @@ module PE_CTRL (
                         // 클리어 사이클: PE 누산기 초기화
                         pe_clr <= 1;
                         cnt    <= cnt + 1;
-                    end else if (cnt <= 9) begin
+                    end else if (cnt <= MAC_CYCLES) begin
                         // MAC 사이클: 9개 원소 순서대로 곱셈누산
                         pe_clr <= 0;
                         pe_win <= ker[2 - (cnt-1)/3][2 - (cnt-1)%3]; // 180° 뒤집힌 커널
@@ -49,7 +56,7 @@ module PE_CTRL (
                             3: pe_din <= img[((cnt-1)/3)+1][((cnt-1)%3)+1]; // C22 윈도우
                         endcase
                         cnt <= cnt + 1;
-                    end else if (cnt == 10) begin
+                    end else if (cnt == MAC_CYCLES + CLEAR_CYCLE) begin
                         // 파이프라인 레이턴시 대기
                         cnt <= cnt + 1;
                     end else begin
@@ -64,7 +71,7 @@ module PE_CTRL (
                         state <= state + 1;
                     end
                 end
-                4: done <= 1; // 4개 출력 모두 완료
+                NUM_OUTPUTS: done <= 1; // 모든 출력 완료
             endcase
         end
     end

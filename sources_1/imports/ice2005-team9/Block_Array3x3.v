@@ -10,7 +10,7 @@ module Block_Array3x3 (
 );
     // FSM ↔ 어레이 연결 내부 와이어
     wire       pe_clr;
-    wire [7:0] r_din0, r_din1, r_din2;
+    wire [7:0] systolic_data_in0, systolic_data_in1, systolic_data_in2;
     wire [7:0] sout20, sout21, sout22;
     wire [7:0] w00, w01, w02, w10, w11, w12, w20, w21, w22;
 
@@ -20,7 +20,7 @@ module Block_Array3x3 (
         .flat_image(flat_image), .flat_kernel(flat_kernel),
         .sout20(sout20), .sout21(sout21), .sout22(sout22),
         .pe_clr(pe_clr),
-        .r_din0(r_din0), .r_din1(r_din1), .r_din2(r_din2),
+        .systolic_data_in0(systolic_data_in0), .systolic_data_in1(systolic_data_in1), .systolic_data_in2(systolic_data_in2),
         .w00(w00), .w01(w01), .w02(w02),
         .w10(w10), .w11(w11), .w12(w12),
         .w20(w20), .w21(w21), .w22(w22),
@@ -32,7 +32,7 @@ module Block_Array3x3 (
     // 3×3 시스톨릭 어레이 본체
     SA3x3 u_sa3x3 (
         .clk(clk), .rst(rst), .clear(pe_clr),
-        .din0(r_din0), .din1(r_din1), .din2(r_din2),
+        .din0(systolic_data_in0), .din1(systolic_data_in1), .din2(systolic_data_in2),
         .win00(w00), .win01(w01), .win02(w02),
         .win10(w10), .win11(w11), .win12(w12),
         .win20(w20), .win21(w21), .win22(w22),
