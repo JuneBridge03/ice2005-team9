@@ -40,14 +40,14 @@ module display_FSM_module #(
     //FSM 상태
     reg [3:0] current_state, next_state;
 
-    localparam SA_2X2_11 = 3'd0, SA_2X2_12 = 3'd1, SA_2X2_21 = 3'd2, SA_2X2_22 = 3'd3,
-               SA_3X3_11 = 3'd4, SA_3X3_12 = 3'd5, SA_3X3_21 = 3'd6, SA_3X3_22 = 3'd7;
+    localparam SA_3X3_11 = 3'd0, SA_3X3_12 = 3'd1, SA_3X3_21 = 3'd2, SA_3X3_22 = 3'd3,
+               SA_2X2_11 = 3'd4, SA_2X2_12 = 3'd5, SA_2X2_21 = 3'd6, SA_2X2_22 = 3'd7;
     
     //FSM - Moore machine
     //현재 상태 업데이트
     always @ (posedge clk or posedge rst) begin
         if (rst) begin
-            current_state <= SA_2X2_11;
+            current_state <= SA_3X3_11;
         end
         else if (fsm_clk_en) begin
             current_state <= next_state;
@@ -57,16 +57,16 @@ module display_FSM_module #(
     //다음 상태 결정
     always @ (*) begin
         case(current_state)
-            SA_2X2_11 : next_state = SA_2X2_12;
-            SA_2X2_12 : next_state = SA_2X2_21;
-            SA_2X2_21 : next_state = SA_2X2_22;
-            SA_2X2_22 : next_state = SA_3X3_11;
-
             SA_3X3_11 : next_state = SA_3X3_12;
             SA_3X3_12 : next_state = SA_3X3_21;
             SA_3X3_21 : next_state = SA_3X3_22;
             SA_3X3_22 : next_state = SA_2X2_11;
-            default   : next_state = SA_2X2_11;
+            
+            SA_2X2_11 : next_state = SA_2X2_12;
+            SA_2X2_12 : next_state = SA_2X2_21;
+            SA_2X2_21 : next_state = SA_2X2_22;
+            SA_2X2_22 : next_state = SA_3X3_11;
+            default   : next_state = SA_3X3_11;
         endcase
     end
 
@@ -85,8 +85,5 @@ module display_FSM_module #(
             default   : display_data = 8'd0;      
         endcase
     end
-
-    //상태 확인용 LED
-    assign state = current_state;
 
 endmodule
