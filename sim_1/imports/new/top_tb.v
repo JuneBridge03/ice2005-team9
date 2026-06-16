@@ -67,7 +67,7 @@ module top_tb();
     );
 
     // 시뮬레이션을 위한 디스플레이 FSM/세그먼트 순환 시간 단축
-    defparam dut.disp.FSM_MAX = 5;
+    defparam dut.disp.FSM_MAX = 8;
     defparam dut.disp.DRIVER_MAX = 2;
 
     // 테스트 시퀀스 입력
@@ -80,10 +80,6 @@ module top_tb();
         #20;
         RST = 1;
 
-        // 연산기가 데이터를 모두 처리하고 디스플레이 FSM이 순환할 때까지 대기
-        #100000; 
-
-        $finish; // 시뮬레이션 종료
     end
 
 endmodule
