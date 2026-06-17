@@ -3,7 +3,6 @@
 module display_tb(
     );
 
-    //입력은 사전에 선언된 localparam 사용, 별도 wire 지정 안함 - 클럭과 리셋만 지정
     reg clk, rst;
     reg [7:0] sa_2x2_11, sa_2x2_12, sa_2x2_21, sa_2x2_22;
     reg [7:0] sa_3x3_11, sa_3x3_12, sa_3x3_21, sa_3x3_22;
