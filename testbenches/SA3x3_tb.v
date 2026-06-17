@@ -17,7 +17,7 @@ module tb_SA3x3;
         .flat_image(flat_image), .flat_kernel(flat_kernel),
         .sout20(sout20), .sout21(sout21), .sout22(sout22),
         .pe_clr(pe_clr),
-        .r_din0(r_din0), .r_din1(r_din1), .r_din2(r_din2),
+        .systolic_data_in0(r_din0), .systolic_data_in1(r_din1), .systolic_data_in2(r_din2),
         .w00(w00), .w01(w01), .w02(w02),
         .w10(w10), .w11(w11), .w12(w12),
         .w20(w20), .w21(w21), .w22(w22),

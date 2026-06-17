@@ -29,7 +29,7 @@ module PE_OS (
 
     // 누산기 레지스터 (출력이 입력으로 피드백)
     eight_bit_register_structural_module u_acc_reg (
-        .in(reg_in), .clk(clk), .rst(rst), .out(acc_out)
+        .in(reg_in), .en(1'b1), .clk(clk), .rst(rst), .out(acc_out)
     );
 
     assign sum_out = acc_out;

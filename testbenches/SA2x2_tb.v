@@ -16,7 +16,8 @@ module tb_SA2x2;
         .flat_image(flat_image), .flat_kernel(flat_kernel),
         .pe_out_1(po1), .pe_out_2(po2), .pe_out_3(po3), .pe_out_4(po4),
         .pe_clr(pe_clr),
-        .filter1(f1), .filter2(f2), .in1(i1), .in2(i2),
+        .systolic_filter_in0(f1), .systolic_filter_in1(f2),
+        .systolic_data_in0(i1), .systolic_data_in1(i2),
         .c11(c11), .c12(c12), .c21(c21), .c22(c22),
         .done(done)
     );
